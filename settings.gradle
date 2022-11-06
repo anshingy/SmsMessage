@@ -5,6 +5,7 @@ pluginManagement {
         mavenCentral()
         // 配置HMS Core SDK的Maven仓地址。
         maven {url 'https://developer.huawei.com/repo/'}
+        maven { url 'https://jitpack.io' }
     }
 }
 dependencyResolutionManagement {
@@ -14,7 +15,9 @@ dependencyResolutionManagement {
         mavenCentral()
         // 配置HMS Core SDK的Maven仓地址。
         maven {url 'https://developer.huawei.com/repo/'}
+        maven { url 'https://jitpack.io' }
     }
 }
 rootProject.name = "SmsMessage"
 include ':app'
+include ':library'

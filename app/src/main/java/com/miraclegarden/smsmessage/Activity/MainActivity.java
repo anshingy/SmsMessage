@@ -14,7 +14,7 @@ import androidx.annotation.Nullable;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
-import com.miraclegarden.smsmessage.app.MiracleGardenActivity;
+import com.miraclegarden.library.app.MiracleGardenActivity;
 import com.miraclegarden.smsmessage.databinding.ActivityMainBinding;
 
 import java.util.ArrayList;

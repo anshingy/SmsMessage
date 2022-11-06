@@ -26,11 +26,8 @@ import androidx.annotation.RequiresApi;
 import androidx.core.content.ContextCompat;
 import androidx.core.widget.NestedScrollView;
 
-import com.huawei.hmf.tasks.OnCompleteListener;
-import com.huawei.hmf.tasks.Task;
-import com.huawei.hms.support.sms.ReadSmsManager;
-import com.miraclegarden.smsmessage.Receiver.MySMSBroadcastReceiver;
-import com.miraclegarden.smsmessage.app.MiracleGardenActivity;
+
+import com.miraclegarden.library.app.MiracleGardenActivity;
 import com.miraclegarden.smsmessage.databinding.ActivityNotificationBinding;
 import com.miraclegarden.smsmessage.service.NotificationService;
 

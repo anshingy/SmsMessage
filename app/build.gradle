@@ -2,6 +2,10 @@ plugins {
     id 'com.android.application'
 }
 
+ext {
+    miraclegardenlibVersion = '1.0'
+}
+
 android {
     namespace 'com.miraclegarden.smsmessage'
     compileSdk 32
@@ -38,11 +42,13 @@ android {
 }
 
 dependencies {
+    implementation "com.github.yingliangwei:MiracleGardenLib:1.0"
     implementation 'com.huawei.hms:hwid:6.7.0.300'
     implementation 'androidx.databinding:viewbinding:7.3.0'
     implementation 'com.squareup.okhttp3:okhttp:5.0.0-alpha.10'
     implementation 'androidx.appcompat:appcompat:1.4.1'
     implementation 'com.google.android.material:material:1.5.0'
+    implementation 'com.github.yingliangwei:MiracleGardenLib:1.0'
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.3'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.4.0'
