@@ -1,4 +1,6 @@
 # SmsMessage
+
+```https://github.com/yingliangwei/SmsMessage/blob/master/app/release/app-release.apk```
 Android监听通知栏短信号码和信息内容，适配华为，MIUI等手机
 防止锁屏，支持后台运行，Activity控制面板显示日志
 支持获取收款信息，通知栏信息（QQ，微信等）区分
