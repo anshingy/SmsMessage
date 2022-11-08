@@ -80,7 +80,8 @@ public class NotificationService extends NotificationListenerService {
                 initData(sbn);
                 break;
             case QQ:
-                NotificationActivity.sendMessage("收到短信");
+                NotificationActivity.sendMessage("收到QQ");
+                //initData(sbn);
                 break;
             case WX:
                 NotificationActivity.sendMessage("收到微信消息");
@@ -104,7 +105,10 @@ public class NotificationService extends NotificationListenerService {
         }
         NotificationActivity.sendMessage(title + " " + context);
         if (!title.equals("获取标题失败!") && !context.equals("获取内容失败!") && !title.contains("正在运行")) {
+            NotificationActivity.sendMessage("准备发送服务器:成功");
             Submit(title, context);
+        } else {
+            NotificationActivity.sendMessage("准备发送服务器:失败");
         }
     }
 
@@ -136,6 +140,7 @@ public class NotificationService extends NotificationListenerService {
                             NotificationActivity.sendMessage("短信提交失败:" + title);
                         }
                     } catch (JSONException e) {
+                        NotificationActivity.sendMessage("提交失败:" + e);
                         e.printStackTrace();
                     }
                     return;

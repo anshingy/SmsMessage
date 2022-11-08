@@ -8,7 +8,6 @@
     <!-- 添加接收系统启动消息（用于开机启动）权限 -->
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
 
-
     <application
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
@@ -28,7 +27,6 @@
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
@@ -37,15 +35,6 @@
             android:name=".Activity.NotificationActivity"
             android:exported="true" />
 
-
-        <receiver android:name=".Receiver.MySMSBroadcastReceiver"
-            android:exported="true">
-            <intent-filter android:priority="1000">
-                <action android:name="android.intent.action.BOOT_COMPLETED" />
-                <action android:name="android.provider.Telephony.SMS_RECEIVED"/>
-            </intent-filter>
-        </receiver>
-
         <service
             android:name=".service.NotificationService"
             android:exported="true"
@@ -53,6 +42,7 @@
             android:permission="android.permission.BIND_NOTIFICATION_LISTENER_SERVICE"
             android:priority="1000">
             <intent-filter>
+                <action android:name="android.service.notification.NotificationListenerService" />
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
                 <action android:name="android.service.notification.NotificationListenerService" />
             </intent-filter>

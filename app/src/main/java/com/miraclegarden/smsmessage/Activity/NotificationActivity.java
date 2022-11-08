@@ -42,10 +42,14 @@ public class NotificationActivity extends MiracleGardenActivity<ActivityNotifica
         public void handleMessage(@NonNull Message msg) {
             super.handleMessage(msg);
             String str = (String) msg.obj;
-            @SuppressLint("SimpleDateFormat") SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd-HH:mm:ss");
-            String t = format.format(new Date());
-            textView.append(t + "：" + str + "\n\r");
-            scrollView.post(() -> scrollView.fullScroll(ScrollView.FOCUS_DOWN));
+            if (str != null) {
+                @SuppressLint("SimpleDateFormat") SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd-HH:mm:ss");
+                String t = format.format(new Date());
+                if (textView!=null) {
+                    textView.append(t + "：" + str + "\n\r");
+                    scrollView.post(() -> scrollView.fullScroll(ScrollView.FOCUS_DOWN));
+                }
+            }
         }
     };
     public static SharedPreferences sharedPreferences;
