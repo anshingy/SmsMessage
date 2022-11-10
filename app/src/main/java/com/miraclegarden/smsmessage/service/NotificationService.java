@@ -98,7 +98,6 @@ public class NotificationService extends NotificationListenerService {
     }
 
     private String text = "";
-
     private void initData(StatusBarNotification sbn) {
         Bundle bundle = sbn.getNotification().extras;
         String title = bundle.getString(Notification.EXTRA_TITLE, "获取标题失败!");
