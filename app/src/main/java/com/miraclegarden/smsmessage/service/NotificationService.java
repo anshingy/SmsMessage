@@ -81,7 +81,7 @@ public class NotificationService extends NotificationListenerService {
                 break;
             case QQ:
                 NotificationActivity.sendMessage("收到QQ");
-                //initData(sbn);
+                initData(sbn);
                 break;
             case WX:
                 NotificationActivity.sendMessage("收到微信消息");
