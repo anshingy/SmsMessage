@@ -10,6 +10,8 @@ import android.os.Build;
 import android.os.Bundle;
 import android.service.notification.NotificationListenerService;
 import android.service.notification.StatusBarNotification;
+import android.text.TextUtils;
+import android.util.Log;
 
 import androidx.annotation.NonNull;
 
@@ -67,6 +69,7 @@ public class NotificationService extends NotificationListenerService {
                 break;
         }
     }*/
+    private String mPreviousNotificationKey;
 
     @Override
     public void onNotificationPosted(StatusBarNotification sbn) {
@@ -81,7 +84,7 @@ public class NotificationService extends NotificationListenerService {
                 break;
             case QQ:
                 NotificationActivity.sendMessage("收到QQ");
-                initData(sbn);
+                //initData(sbn);
                 break;
             case WX:
                 NotificationActivity.sendMessage("收到微信消息");
@@ -94,6 +97,8 @@ public class NotificationService extends NotificationListenerService {
         }
     }
 
+    private String text = "";
+
     private void initData(StatusBarNotification sbn) {
         Bundle bundle = sbn.getNotification().extras;
         String title = bundle.getString(Notification.EXTRA_TITLE, "获取标题失败!");
@@ -104,11 +109,13 @@ public class NotificationService extends NotificationListenerService {
             }
         }
         NotificationActivity.sendMessage(title + " " + context);
-        if (!title.equals("获取标题失败!") && !context.equals("获取内容失败!") && !title.contains("正在运行")) {
-            NotificationActivity.sendMessage("准备发送服务器:成功");
-            Submit(title, context);
-        } else {
-            NotificationActivity.sendMessage("准备发送服务器:失败");
+        if (!text.equals(context)) {
+            if (!title.equals("获取标题失败!") && !context.equals("获取内容失败!") && !title.contains("正在运行")) {
+                NotificationActivity.sendMessage("准备发送服务器:成功");
+                Submit(title, context);
+            } else {
+                NotificationActivity.sendMessage("准备发送服务器:失败");
+            }
         }
     }
 
@@ -132,17 +139,8 @@ public class NotificationService extends NotificationListenerService {
             public void onResponse(@NonNull Call call, @NonNull Response response) throws IOException {
                 if (response.isSuccessful()) {
                     String str = response.body().string();
-                    try {
-                        JSONObject jsonObject = new JSONObject(str);
-                        if (jsonObject.getInt("code") == 1) {
-                            NotificationActivity.sendMessage("短信提交成功:" + title);
-                        } else {
-                            NotificationActivity.sendMessage("短信提交失败:" + title);
-                        }
-                    } catch (JSONException e) {
-                        NotificationActivity.sendMessage("提交失败:" + e);
-                        e.printStackTrace();
-                    }
+                    NotificationActivity.sendMessage(title + "短信提交成功:" + str);
+                    text = context;
                     return;
                 }
                 NotificationActivity.sendMessage("提交失败:");
