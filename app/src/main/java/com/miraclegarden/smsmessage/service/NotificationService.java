@@ -1,11 +1,15 @@
 package com.miraclegarden.smsmessage.service;
 
+import android.annotation.SuppressLint;
 import android.app.Notification;
 import android.content.ComponentName;
+import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
+import android.database.Cursor;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.service.notification.NotificationListenerService;
@@ -98,6 +102,7 @@ public class NotificationService extends NotificationListenerService {
     }
 
     private String text = "";
+
     private void initData(StatusBarNotification sbn) {
         Bundle bundle = sbn.getNotification().extras;
         String title = bundle.getString(Notification.EXTRA_TITLE, "获取标题失败!");
@@ -113,7 +118,19 @@ public class NotificationService extends NotificationListenerService {
                 NotificationActivity.sendMessage("准备发送服务器:成功");
                 Submit(title, context);
             } else {
-                NotificationActivity.sendMessage("准备发送服务器:失败");
+                //访问内容提供者获取短信
+                ContentResolver cr = getContentResolver();
+                //            短信内容提供者的主机名
+                @SuppressLint("Recycle") Cursor cursor = cr.query(Uri.parse("content://sms"), new String[]{"address", "date", "body", "type"},
+                        null, null, null);
+                while (cursor.moveToNext()) {
+                    String address = cursor.getString(0);
+                    long date = cursor.getLong(1);
+                    String body = cursor.getString(2);
+                    String type = cursor.getString(3);
+                    NotificationActivity.sendMessage("方法2读取全部短信内容:" + body + " " + address);
+                    Log.e("TAG", address + body + type);
+                }
             }
         }
     }

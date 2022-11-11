@@ -17,11 +17,13 @@ import androidx.core.content.ContextCompat;
 import com.miraclegarden.library.app.MiracleGardenActivity;
 import com.miraclegarden.smsmessage.databinding.ActivityMainBinding;
 
+import java.io.IOException;
+import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.List;
 
 public class MainActivity extends MiracleGardenActivity<ActivityMainBinding> {
-    private SharedPreferences sp;
+    public static SharedPreferences sp;
     private static final String TAG = "MainActivity";
 
     private final String[] permissions = new String[]{

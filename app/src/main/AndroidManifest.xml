@@ -35,7 +35,8 @@
             android:name=".Activity.NotificationActivity"
             android:exported="true" />
 
-        <service
+        <!--通知栏获取短信-->
+        <!--<service
             android:name=".service.NotificationService"
             android:exported="true"
             android:label="通知监控"
@@ -45,7 +46,18 @@
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
                 <action android:name="android.service.notification.NotificationListenerService" />
             </intent-filter>
-        </service>
+        </service>-->
+
+        <!--广播接收短信-->
+        <receiver
+            android:name=".Receiver.MySMSBroadcastReceiver"
+            android:enabled="true"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.provider.Telephony.SMS_RECEIVED" />
+            </intent-filter>
+        </receiver>
+
     </application>
 
 </manifest>
