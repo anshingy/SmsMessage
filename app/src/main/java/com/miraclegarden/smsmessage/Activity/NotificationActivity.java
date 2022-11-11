@@ -79,7 +79,8 @@ public class NotificationActivity extends MiracleGardenActivity<ActivityNotifica
         NotificationActivity.scrollView = binding.scrollable;
         initPermission();
         initView();
-        initService();
+        //
+        // initService();
     }
 
 

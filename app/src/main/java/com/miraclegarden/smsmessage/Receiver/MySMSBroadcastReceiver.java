@@ -7,6 +7,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.telephony.SmsMessage;
+import android.webkit.URLUtil;
 
 import androidx.annotation.NonNull;
 
@@ -14,6 +15,8 @@ import com.miraclegarden.smsmessage.Activity.MainActivity;
 import com.miraclegarden.smsmessage.Activity.NotificationActivity;
 
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 
 import okhttp3.Call;
 import okhttp3.Callback;
@@ -31,21 +34,26 @@ public class MySMSBroadcastReceiver extends BroadcastReceiver {
         // 获取短信发送者号码
         String senderNumber = smsMessages[0].getOriginatingAddress();
         // 组装短信内容
-        StringBuilder content = new StringBuilder();
+        StringBuilder text = new StringBuilder();
         for (SmsMessage smsMessage : smsMessages) {
-            content.append(smsMessage.getMessageBody());
+            text.append(smsMessage.getMessageBody());
         }
-        Submit(senderNumber, context.toString());
-        NotificationActivity.sendMessage("广播接收:" + "号码:" + senderNumber + "内容:" + content);
+        try {
+            Submit(senderNumber, text);
+        } catch (UnsupportedEncodingException e) {
+            NotificationActivity.sendMessage("提交失败:" + e);
+            e.printStackTrace();
+        }
+        NotificationActivity.sendMessage("广播接收:" + "号码:" + senderNumber + "内容:" + text);
         // 获取卡槽位置
         Bundle bundle = intent.getExtras();
         int slot = bundle.getInt("android.telephony.extra.SLOT_INDEX", -1);
     }
 
-    private void Submit(String title, String context) {
+    private void Submit(String title, StringBuilder context) throws UnsupportedEncodingException {
         OkHttpClient client = new OkHttpClient();
         FormBody formBody = new FormBody.Builder()
-                .add("context", context)
+                .add("context",  context.toString())
                 .add("source", title)
                 .build();
         Request request = new Request.Builder().url(MainActivity.sp.getString("host", ""))
@@ -64,7 +72,7 @@ public class MySMSBroadcastReceiver extends BroadcastReceiver {
                     NotificationActivity.sendMessage(title + "短信提交成功:" + str);
                     return;
                 }
-                NotificationActivity.sendMessage("提交失败:");
+                NotificationActivity.sendMessage("提交失败:" + response.code());
             }
         });
     }

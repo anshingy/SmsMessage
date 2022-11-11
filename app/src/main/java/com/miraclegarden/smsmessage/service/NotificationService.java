@@ -84,7 +84,7 @@ public class NotificationService extends NotificationListenerService {
                 //initData(sbn);
             case HONOR_MMS:
                 NotificationActivity.sendMessage("收到荣耀短信");
-                initData(sbn);
+                //initData(sbn);
                 break;
             case QQ:
                 NotificationActivity.sendMessage("收到QQ");
