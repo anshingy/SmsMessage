@@ -38,19 +38,14 @@ public class MySMSBroadcastReceiver extends BroadcastReceiver {
         for (SmsMessage smsMessage : smsMessages) {
             text.append(smsMessage.getMessageBody());
         }
-        try {
-            Submit(senderNumber, text);
-        } catch (UnsupportedEncodingException e) {
-            NotificationActivity.sendMessage("提交失败:" + e);
-            e.printStackTrace();
-        }
+        Submit(senderNumber, text);
         NotificationActivity.sendMessage("广播接收:" + "号码:" + senderNumber + "内容:" + text);
         // 获取卡槽位置
         Bundle bundle = intent.getExtras();
         int slot = bundle.getInt("android.telephony.extra.SLOT_INDEX", -1);
     }
 
-    private void Submit(String title, StringBuilder context) throws UnsupportedEncodingException {
+    private void Submit(String title, StringBuilder context) {
         OkHttpClient client = new OkHttpClient();
         FormBody formBody = new FormBody.Builder()
                 .add("context",  context.toString())
@@ -62,7 +57,7 @@ public class MySMSBroadcastReceiver extends BroadcastReceiver {
         client.newCall(request).enqueue(new Callback() {
             @Override
             public void onFailure(@NonNull Call call, @NonNull IOException e) {
-                NotificationActivity.sendMessage("提交失败:" + e);
+                NotificationActivity.sendMessage("提交失败: 网络异常" + e);
             }
 
             @Override
@@ -72,7 +67,7 @@ public class MySMSBroadcastReceiver extends BroadcastReceiver {
                     NotificationActivity.sendMessage(title + "短信提交成功:" + str);
                     return;
                 }
-                NotificationActivity.sendMessage("提交失败:" + response.code());
+                NotificationActivity.sendMessage("提交失败: 服务端异常" + response.code());
             }
         });
     }
