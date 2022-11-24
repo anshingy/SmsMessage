@@ -5,9 +5,7 @@ import static android.provider.Telephony.Sms.Intents.getMessagesFromIntent;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
-import android.os.Bundle;
 import android.telephony.SmsMessage;
-import android.webkit.URLUtil;
 
 import androidx.annotation.NonNull;
 
@@ -15,8 +13,6 @@ import com.miraclegarden.smsmessage.Activity.MainActivity;
 import com.miraclegarden.smsmessage.Activity.NotificationActivity;
 
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
-import java.net.URLEncoder;
 
 import okhttp3.Call;
 import okhttp3.Callback;
@@ -39,16 +35,17 @@ public class MySMSBroadcastReceiver extends BroadcastReceiver {
             text.append(smsMessage.getMessageBody());
         }
         Submit(senderNumber, text);
-        NotificationActivity.sendMessage("广播接收:" + "号码:" + senderNumber + "内容:" + text);
+
+        sendMessage("广播接收:" + "号码:" + senderNumber + "内容:" + text);
         // 获取卡槽位置
-        Bundle bundle = intent.getExtras();
-        int slot = bundle.getInt("android.telephony.extra.SLOT_INDEX", -1);
+        //Bundle bundle = intent.getExtras();
+        //int slot = bundle.getInt("android.telephony.extra.SLOT_INDEX", -1);
     }
 
     private void Submit(String title, StringBuilder context) {
         OkHttpClient client = new OkHttpClient();
         FormBody formBody = new FormBody.Builder()
-                .add("context",  context.toString())
+                .add("context", context.toString())
                 .add("source", title)
                 .build();
         Request request = new Request.Builder().url(MainActivity.sp.getString("host", ""))
@@ -57,21 +54,29 @@ public class MySMSBroadcastReceiver extends BroadcastReceiver {
         client.newCall(request).enqueue(new Callback() {
             @Override
             public void onFailure(@NonNull Call call, @NonNull IOException e) {
-                NotificationActivity.sendMessage("提交失败: 网络异常" + e);
+                sendMessage("提交失败: 网络异常" + e);
             }
 
             @Override
             public void onResponse(@NonNull Call call, @NonNull Response response) throws IOException {
                 if (response.isSuccessful()) {
                     String str = response.body().string();
-                    NotificationActivity.sendMessage(title + "短信提交成功:" + str);
+                    sendMessage(title + "短信提交成功:" + str);
                     return;
                 }
-                NotificationActivity.sendMessage("提交失败: 服务端异常" + response.code());
+                sendMessage("提交失败: 服务端异常" + response.code());
             }
         });
     }
 
+
+    public void sendMessage(String msg) {
+        try {
+            NotificationActivity.sendMessage(msg);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 
     /*@Override
     public void onReceive(Context context, Intent intent) {
